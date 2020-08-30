@@ -11,7 +11,7 @@ defaultdb = "lahman.db"
 for name in ('sqlite', 'sqlite3', 'sqlite3.exe'):
     if os.path.exists(name):
         sqlite = "./" + name
-        print("Using `{}` to run tests.")
+        print("Using `{}` to run tests.".format(sqlite))
         break
 
 queries = [
