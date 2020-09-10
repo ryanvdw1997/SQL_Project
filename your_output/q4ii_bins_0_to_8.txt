@@ -1,2 +1,1 @@
-binid|low|high|count
-1|1|1|1
+Error: no such table: q4ii
