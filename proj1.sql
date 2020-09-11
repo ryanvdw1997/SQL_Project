@@ -142,13 +142,15 @@ AS
 -- Question 4ii
 CREATE VIEW q4ii(binid, low, high, count)
 AS
-  SELECT binid, low, high, count
-  FROM binids(binid) AS (VALUES (0), (1), (2), (3), (4), (5), (6), (7), (8), (9))
-  INSERT (SELECT MIN(salary), MAX(salary), COUNT(*)
-          FROM salaries
-          ORDER BY salary ASC
-          LIMIT (SELECT COUNT(*)
-                 FROM salaries)/10
+  WITH binids(binid) AS (VALUES (0), (1), (2), (3), (4), (5), (6), (7), (8), (9))
+  SELECT binid, low, high, COUNT(binid) AS count
+  FROM (SELECT binid, ((binid)*((MAX(salary) - MIN(salary))/10)) + MIN(salary) AS low,
+                        ((binid + 1)*((MAX(salary) - MIN(salary))/10)) + MIN(salary) AS high
+  FROM binids, (SELECT salary FROM salaries WHERE yearid = 2016)
+  GROUP BY binid)
+  INNER JOIN (SELECT * FROM salaries WHERE yearid = 2016)
+  ON salary >= low AND salary <= high
+  GROUP BY binid
 ;
 
 -- Question 4iii
